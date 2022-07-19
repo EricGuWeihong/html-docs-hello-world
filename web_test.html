@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AE/PC Detector - Staging</title>
+</head>
+<body>
+<span>请输入文本:</span><p>
+<textarea id="sentence" rows="10" cols="30" wrap="soft">慢淋患者使用泽布替尼白细胞升高，是什么原因？</textarea><p>
+<button id="check">检查</button>
+<div class="content">
+<div>结果: <span id="result"></span></div>
+</div>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.0.min.js"></script>
+<script>
+  $("#check").click(function() {
+    console.log($("#sentence").val())
+    if ($("#sentence").val()==""){
+      alert("请输入需要检查的文本");
+    } else {
+      var url = "http://52.167.66.71:80/api/v1/service/aepc-clf/score";
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", url);
+
+      xhr.setRequestHeader("Authorization", "Bearer UwYqzm3py2k0RWE5AGce4mZG7RfmZ3eO");
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.withCredentials = true;
+
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            console.log(xhr.status);
+            console.log(xhr.responseText);
+        }};
+
+      var data = [$("#sentence").val()];
+      xhr.send(data);
+    }
+  })
+</script>
+</body>
+</html>
